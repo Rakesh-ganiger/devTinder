@@ -1,0 +1,18 @@
+{
+  "name": "devtinder",
+  "version": "1.0.0",
+  "description": "dev tinder project",
+  "main": "index.js",
+  "scripts": {
+    "start":"node src/app.js",
+    "dev":"nodemon src/app.js"
+  },
+  "keywords": [
+    "Nodejs"
+  ],
+  "author": "Rakesh Ganiger",
+  "license": "ISC",
+  "dependencies": {
+    "express": "^4.19.2"
+  }
+}
