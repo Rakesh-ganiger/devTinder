@@ -1,27 +1,42 @@
 const express=require("express");
-const app=express();
+const connectDb = require("./config/database");
+const User=require("./models/user")
+const app=express()
 
 
-const {adminAuth,userAuth}=require("./middlewares/auth")
-app.use("/admin",adminAuth)
+app.post("/signup",async(req,res)=>{
+    // const userobj={
+    //     firstName:"Rakesh",
+    //     lastName:"Ganiger",
+    //     gmail:"rakesh@123.com",
+    //     password:"rakesh@123"
+    // }
 
+    const user=new User({
+            firstName:"Virat",
+            lastName:"Kohli",
+            email:"Virat@123.com",
+            password:"Virat@123"
 
-app.get("/user",userAuth, (req,res)=>{
-    res.send("user data sent")
-
+    });
+    try {
+        await user.save();
+        res.send("data send sucess fully")
+        
+    } catch (error) {
+        res.status(401).send("error in database"+ error.message)     
+    }
+     
 })
 
-app.get("/admin/getAllData", (req,res)=>{
-    res.send("get the user data")
+connectDb().then(() => {
+    console.log("database connected established")
+    app.listen(7777,()=>{
+        console.log("server created suceesfully")
+    })
+    
+}).catch(() => {
+    console.log("database cannot be connected")
+    
+});
 
-})
-
-app.get("/admin/deleteUser",(req,res)=>{
-   res.send("get the deleted data")
-})
-
-
-
-app.listen(7777,()=>{
-    console.log("server created suceesfully")
-})
