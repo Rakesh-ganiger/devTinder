@@ -1,7 +1,10 @@
 const express=require("express");
 const connectDb = require("./config/database");
 const User=require("./models/user")
+const {validateSignupData}=require("./utils/validation")
+const bcrypt=require("bcrypt")
 const app=express()
+
 
 
 app.use(express.json())
@@ -31,8 +34,21 @@ app.post("/signup",async(req,res)=>{
     // }
     // without sending the hard coaded data we will send the dynamic data by using this below method and also we use middleware to handle json data the middleware is app.use(express.json())
 
-    const user=new User(req.body);
-try {
+    // const user=new User(req.body);
+    try {
+    validateSignupData(req)
+    const{firstName,lastName,email,password}=req.body
+    const passwordHash= await bcrypt.hash(password,10)
+    console.log(password)
+    const user=new User({
+        firstName,
+        lastName,
+        email,
+        password:passwordHash
+    })
+
+    
+
     await user.save();
     res.send("data send sucess fully")
     
