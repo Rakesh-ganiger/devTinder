@@ -1,4 +1,5 @@
 const mongoose=require("mongoose")
+const validator=require("validator")
 
 const UserSchema=mongoose.Schema({
     firstName:{
@@ -17,7 +18,13 @@ const UserSchema=mongoose.Schema({
         required:true,
         trim:true,
         lowercase:true,
-        unique:true
+        unique:true,
+        validate(value){
+            if(!validator.isEmail(value)){
+                throw new Error(" enter the correct email");
+                
+            }
+        }
     },
     age:{
         type:Number,
@@ -32,14 +39,14 @@ const UserSchema=mongoose.Schema({
     password: {
         type: String,
         required: true,
-        validate(value) {
-            if (value.length < 8) {
-                throw new Error("Password must be at least 8 characters long");
-            }
-            if (!/^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])/.test(value)) {
-                throw new Error("Password must contain at least one uppercase letter, one lowercase letter, one number, and one special character");
+        validate(value){
+            if(!validator.isStrongPassword(value)){
+                throw new Error(" enter the correct email");
+                
             }
         }
+        
+       
     },
     gender:{
         type:String,
