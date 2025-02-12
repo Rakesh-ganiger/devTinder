@@ -50,18 +50,38 @@ const UserSchema=mongoose.Schema({
         
        
     },
-    gender:{
-        type:String,
-        validate(value){
-            if(!["male","female","other"].includes(value)){
-                throw new Error("gender is not valid")
+    // gender:{
+    //     type:String,
+    //     validate(value){
+    //         if(!["male","female","other"].includes(value)){
+    //             throw new Error("gender is not valid")
+    //         }
+    //     }
+    // },
+    gender: {
+        type: String,
+        validate(value) {
+            if (!["male", "female", "other"].includes(value.toLowerCase())) {
+                throw new Error("Gender is not valid");
             }
         }
     },
-    photourl:{
-        type:String,
-        default:"https://www.vecteezy.com/vector-art/45711185-male-profile-picture-placeholder-for-social-media-forum-dating-site-chat-operator-design-social-profile-template-default-avatar-icon-flat-style"
-    },
+    
+    // photourl:{
+    //     type:String,
+    //     default:"https://www.vecteezy.com/vector-art/45711185-male-profile-picture-placeholder-for-social-media-forum-dating-site-chat-operator-design-social-profile-template-default-avatar-icon-flat-style"
+    // },
+ 
+    photourl: {
+        type: String,
+        default: "https://geographyandyou.com/images/user-profile.png",
+
+        validate(value) {
+          if (!validator.isURL(value)) {
+            throw new Error("Invalid Photo URL: " + value);
+          }
+        },
+      },
     about:{
         type:String,
         default:"This is a deafault about user"
